@@ -37,9 +37,7 @@ public class TestInvalidOrderCreation {
             "    - сервер отвечает с кодом 500")
     @Test
     public void shouldNotCreateNewOrderWithoutValidIngredient() {
-        //создать заказ
         orderRequest = OrderGenerator.getRandomData();
-        //проверить ответ cервера
         ValidatableResponse orderResponse = orderClient.createNewOrder(orderRequest);
         statusCode = orderResponse.extract().statusCode();
 
@@ -52,7 +50,6 @@ public class TestInvalidOrderCreation {
             "    - тело ответа содержит искомое сообщение об ошибке")
     @Test
     public void shouldNotCreateNewOrderWithoutIngredients() {
-        //создать заказ
         orderRequest = OrderGenerator.getZeroData();
         //проверить сообщение об ошибке
         ValidatableResponse orderResponse = orderClient.createNewOrder(orderRequest);

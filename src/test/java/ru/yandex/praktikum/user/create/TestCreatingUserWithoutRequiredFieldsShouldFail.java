@@ -9,10 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import ru.yandex.praktikum.client.UserClient;
-import ru.yandex.praktikum.model.*;
+import ru.yandex.praktikum.model.ErrorResponse;
+import ru.yandex.praktikum.model.User;
 
 import static java.net.HttpURLConnection.HTTP_FORBIDDEN;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 @RunWith(Parameterized.class)
 public class TestCreatingUserWithoutRequiredFieldsShouldFail {
     private final String email;
@@ -22,25 +25,23 @@ public class TestCreatingUserWithoutRequiredFieldsShouldFail {
     private ErrorResponse errorResponse;
     private String errorMessage;
     private int statusCode;
-    private final boolean isUserCreated;
 
-    public TestCreatingUserWithoutRequiredFieldsShouldFail(String email, String password, String name, boolean isUserCreated) {
+    public TestCreatingUserWithoutRequiredFieldsShouldFail(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.isUserCreated = isUserCreated;
     }
 
-    @Parameterized.Parameters(name = "Email, password и name. Тестовые данные: {0} {1} {2}. Создан ли пользователь: {3}")
-    public static Object[][] getUserData() {
+    @Parameterized.Parameters(name = "Email, password и name. Некорректные тестовые данные: {0} {1} {2}.")
+    public static Object[][] getIncorrectUserDataSet() {
         return new Object[][]{
-                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", "", "", false},
-                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", RandomStringUtils.randomAlphanumeric(5), "", false},
-                {"", RandomStringUtils.randomAlphanumeric(5), "", false},
-                {"", "", RandomStringUtils.randomAlphabetic(5), false},
-                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", "", RandomStringUtils.randomAlphanumeric(5), false},
-                {"", RandomStringUtils.randomAlphanumeric(5), RandomStringUtils.randomAlphabetic(5), false},
-                {"", "", "", false}
+                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", "", ""},
+                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", RandomStringUtils.randomAlphanumeric(5), ""},
+                {"", RandomStringUtils.randomAlphanumeric(5), ""},
+                {"", "", RandomStringUtils.randomAlphabetic(5)},
+                {RandomStringUtils.randomAlphanumeric(3) + "@yandex.ru", "", RandomStringUtils.randomAlphanumeric(5)},
+                {"", RandomStringUtils.randomAlphanumeric(5), RandomStringUtils.randomAlphabetic(5)},
+                {"", "", ""}
         };
     }
 

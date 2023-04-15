@@ -6,7 +6,7 @@ import ru.yandex.praktikum.client.base.ClientConfiguration;
 import ru.yandex.praktikum.model.OrderRequest;
 import ru.yandex.praktikum.model.UserResponse;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 
 public class OrderClient extends ClientConfiguration {
     private static final String ORDERS_URI = URI + "/api/orders/";

@@ -4,8 +4,8 @@ import io.qameta.allure.Step;
 import io.restassured.response.ValidatableResponse;
 import ru.yandex.praktikum.client.base.ClientConfiguration;
 import ru.yandex.praktikum.model.User;
-import ru.yandex.praktikum.model.UserResponse;
 import ru.yandex.praktikum.model.UserLogin;
+import ru.yandex.praktikum.model.UserResponse;
 
 import static io.restassured.RestAssured.given;
 

@@ -12,18 +12,20 @@ import org.junit.runners.Parameterized;
 import ru.yandex.praktikum.client.UserClient;
 import ru.yandex.praktikum.model.*;
 
-import static java.net.HttpURLConnection.*;
+import static java.net.HttpURLConnection.HTTP_OK;
+import static java.net.HttpURLConnection.HTTP_UNAUTHORIZED;
 import static org.junit.Assert.*;
+
 @RunWith(Parameterized.class)
 public class TestUserUpdate {
-        private UserClient userClient;
-        private AuthResponse authResponse;
-        private ErrorResponse errorResponse;
-        private UserResponse userResponse;
-        private int statusCode;
-        private final String email;
-        private final String password;
-        private final String name;
+    private final String email;
+    private final String password;
+    private final String name;
+    private UserClient userClient;
+    private AuthResponse authResponse;
+    private ErrorResponse errorResponse;
+    private UserResponse userResponse;
+    private int statusCode;
 
     public TestUserUpdate(String email, String password, String name) {
         this.email = email;
@@ -43,46 +45,48 @@ public class TestUserUpdate {
                 {"", "", ""}
         };
     }
-        @Before
-        public void setUp() {
-            userClient = new UserClient();
-        }
-        @After
-        public void clearDown() {
+
+    @Before
+    public void setUp() {
+        userClient = new UserClient();
+    }
+
+    @After
+    public void clearDown() {
         userClient.deleteUser(userResponse);
     }
 
-        @DisplayName("Изменение даннных пользователя")
-        @Description("Проверить, что поля пользователя можно изменить;\n" +
-                "    - чтобы изменить пользователя, нужно передать в ручку все обязательные поля;\n" +
-                "    - запрос содержит авторизацию;\n" +
-                "    - запрос возвращает правильный код ответа;\n" +
-                "    - успешный запрос возвращает ожидаемое тело ответа")
-        @Test
-        public void shouldUpdateUserDataAndCheckResponse() {
-            User user = UserGenerator.getRandomData();
-            ValidatableResponse createResponse = userClient.createNewUser(user);
-            statusCode = createResponse.extract().statusCode();
-            userResponse = createResponse.extract().as(UserResponse.class);
+    @DisplayName("Изменение даннных пользователя")
+    @Description("Проверить, что поля пользователя можно изменить;\n" +
+            "    - чтобы изменить пользователя, нужно передать в ручку все обязательные поля;\n" +
+            "    - запрос содержит авторизацию;\n" +
+            "    - запрос возвращает правильный код ответа;\n" +
+            "    - успешный запрос возвращает ожидаемое тело ответа")
+    @Test
+    public void shouldUpdateUserDataAndCheckResponse() {
+        User user = UserGenerator.getRandomData();
+        ValidatableResponse createResponse = userClient.createNewUser(user);
+        statusCode = createResponse.extract().statusCode();
+        userResponse = createResponse.extract().as(UserResponse.class);
 
-            if (!this.email.equals("")){
-                user.setEmail(this.email);
-            }
-            if(!this.password.equals("")){
-                user.setPassword(this.password);
-            }
-            if(!this.name.equals("")){
-                user.setName(this.name);
-            }
-
-            ValidatableResponse updateResponse = userClient.updateUser(user, userResponse);
-            authResponse = updateResponse.extract().as(AuthResponse.class);
-
-            assertEquals("The status code is invalid", HTTP_OK, statusCode);
-            assertTrue(authResponse.isSuccess());
-            assertEquals(user.getEmail().toLowerCase(), authResponse.getUser().getEmail());
-            assertEquals(user.getName(), authResponse.getUser().getName());
+        if (!this.email.equals("")) {
+            user.setEmail(this.email);
         }
+        if (!this.password.equals("")) {
+            user.setPassword(this.password);
+        }
+        if (!this.name.equals("")) {
+            user.setName(this.name);
+        }
+
+        ValidatableResponse updateResponse = userClient.updateUser(user, userResponse);
+        authResponse = updateResponse.extract().as(AuthResponse.class);
+
+        assertEquals("The status code fro user update is invalid", HTTP_OK, statusCode);
+        assertTrue(authResponse.isSuccess());
+        assertEquals(user.getEmail().toLowerCase(), authResponse.getUser().getEmail());
+        assertEquals(user.getName(), authResponse.getUser().getName());
+    }
 
     @DisplayName("Запрещено изменение даннных пользователя без авторизационного токена")
     @Test
@@ -92,13 +96,13 @@ public class TestUserUpdate {
         statusCode = createResponse.extract().statusCode();
         userResponse = createResponse.extract().as(UserResponse.class);
 
-        if (!this.email.equals("")){
+        if (!this.email.equals("")) {
             user.setEmail(this.email);
         }
-        if(!this.password.equals("")){
+        if (!this.password.equals("")) {
             user.setPassword(this.password);
         }
-        if(!this.name.equals("")){
+        if (!this.name.equals("")) {
             user.setName(this.name);
         }
 
@@ -106,7 +110,7 @@ public class TestUserUpdate {
         statusCode = updateResponse.extract().statusCode();
         errorResponse = updateResponse.extract().as(ErrorResponse.class);
 
-        assertEquals("The status code is invalid", HTTP_UNAUTHORIZED, statusCode);
+        assertEquals("The status code for user update is invalid", HTTP_UNAUTHORIZED, statusCode);
         assertFalse(errorResponse.isSuccess());
     }
 }

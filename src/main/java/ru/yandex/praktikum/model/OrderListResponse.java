@@ -3,8 +3,8 @@ package ru.yandex.praktikum.model;
 import java.util.ArrayList;
 
 public class OrderListResponse {
-    private boolean success;
     public ArrayList<Object> orders;
+    private boolean success;
     private int total;
     private int totalToday;
 

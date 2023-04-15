@@ -1,9 +1,10 @@
 package ru.yandex.praktikum.order.create;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.ValidatableResponse;
-import org.junit.Before;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.praktikum.client.IngredientClient;
 import ru.yandex.praktikum.client.OrderClient;
@@ -30,10 +31,12 @@ public class TestValidOrderCreation {
         userClient = new UserClient();
         orderClient = new OrderClient();
     }
+
     @After
     public void clearDown() {
-        try {userClient.deleteUser(userResponse);}
-        catch (NullPointerException e) {
+        try {
+            userClient.deleteUser(userResponse);
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             System.out.println("No user found to delete");
         }
@@ -56,7 +59,7 @@ public class TestValidOrderCreation {
         statusCode = ingredientsResponse.extract().statusCode();
         ingredients = ingredientsResponse.extract().body().as(Ingredients.class);
         String ingredientId = ingredients.getData().get(0).get_id();
-        String[] ingredientList = new String[] {ingredientId};
+        String[] ingredientList = new String[]{ingredientId};
         //создать заказ
         orderRequest = new OrderRequest(ingredientList);
         //проверить ответ
@@ -80,7 +83,7 @@ public class TestValidOrderCreation {
         statusCode = ingredientsResponse.extract().statusCode();
         ingredients = ingredientsResponse.extract().body().as(Ingredients.class);
         String ingredientId = ingredients.getData().get(0).get_id();
-        String[] ingredientList = new String[] {ingredientId};
+        String[] ingredientList = new String[]{ingredientId};
         //создать заказ
         orderRequest = new OrderRequest(ingredientList);
         //проверить ответ

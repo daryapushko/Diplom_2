@@ -30,12 +30,14 @@ public class TestOrderListReview {
 
     @After
     public void clearDown() {
-        try {userClient.deleteUser(userResponse);}
-        catch (NullPointerException e) {
+        try {
+            userClient.deleteUser(userResponse);
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
             System.out.println("No user found to delete");
         }
     }
+
     @DisplayName("Получение заказов конкретного пользователя")
     @Description("Проверить, что можно получить список заказов;\n" +
             "    - с авторизацией;\n" +
