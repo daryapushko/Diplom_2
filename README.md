@@ -14,4 +14,3 @@
   ```mvn clean test```
 - для генерации отчета ```allure serve target/allure-results/```
 
-### Дополнительные замечания
